@@ -1,13 +1,13 @@
 ---
-cluster_name: 'mytestcluster'
+cluster_name: 'enhdp'
 
-ambari_version: '2.5.2.0'                                 # must be the 4-part full version number
-hdp_version: '2.6.2.0'                                    # must be the 4-part full version number
-hdf_version: '3.0.1.1'                                    # must be the 4-part full version number
+ambari_version: '2.6.1.3'                                 # must be the 4-part full version number
+hdp_version: '2.6.4.0'                                    # must be the 4-part full version number
+hdf_version: '3.1.1.0'                                    # must be the 4-part full version number
 utils_version: '1.1.0.21'                                 # set this to 1.1.0.21 for HDP >= 2.5 or HDF, and to 1.1.0.20 for any HDP less than 2.5
 
 base_url: 'http://public-repo-1.hortonworks.com'          # change this if using a Local Repository
-mpack_filename: 'hdf-ambari-mpack-3.0.1.1-5.tar.gz'       # must be set if HDF will be installed
+mpack_filename: 'hdf-ambari-mpack-3.1.1.0-35.tar.gz'       # must be set if HDF will be installed
 
 java: 'embedded'                                          # can be set to 'embedded', 'openjdk' or 'oraclejdk'
 oraclejdk_options:                                        # only used when java is set to 'oraclejdk'
@@ -33,3 +33,6 @@ security_options:
   ldap_url: 'ldaps://ad.example.com:636'                  # only used when security is set to 'active-directory'
   container_dn: 'OU=hadoop,DC=example,DC=com'             # only used when security is set to 'active-directory'
   http_authentication: no                                 # set to yes to enable HTTP authentication (SPNEGO)
+
+
+sep: ''

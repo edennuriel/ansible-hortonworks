@@ -300,6 +300,64 @@
     },
 {% endif %}
 {% endif %}
+
+{% if druid_hosts|length > 0 %}
+    {
+        "druid-common" : {
+         "properties_attributes" : { },
+           "properties" : {
+             "druid.metadata.storage.type" : "{{ database }}",
+             "database_name" : "{{ database_options.druid_db_name }}",
+             "druid.metadata.storage.connector.password" : "{{ database_options.druid_db_password }}",
+             "druid.metadata.storage.connector.user" : "{{ database_options.druid_db_username }}",
+             "metastore_hostname" : "{{ database_options.external_hostname|default(ansible_fqdn,true) }}",
+          {% if database == "mysql" or database == "mariadb" -%}
+             "druid.extensions.loadList" : "[\"mysql-metadata-storage\",\"druid-datasketches\", \"druid-hdfs-storage\", \"druid-kafka-indexing-service\", \"ambari-metrics-emitter\"]",
+             "druid.metadata.storage.connector.port" : " {{ mysql_port }}",
+             "druid.metadata.storage.connector.connectURI" : "jdbc:mysql://{{ database_options.external_hostname|default(ansible_fqdn,true) }}:{{ mysql_port }}/{{ database_options.druid_db_name }}",
+          {% endif %}
+             "druid.zk.service.host" : "{% for zk in zookeeper_hosts %}{{ hostvars[zk]['ansible_fqdn'] }}:2181{% if not loop.  last %},{% endif %}{% endfor %}",
+             "druid.storage.type" : "hdfs",
+              "druid.indexer.logs.type" : "hdfs",
+              "druid.indexer.logs.directory" : "/user/druid/logs",
+              "druid.storage.storageDirectory" : "/apps/druid/warehouse"
+         }
+        }
+    },
+{% endif %}
+{% if superset_hosts|length > 0 %}
+     {
+       "superset" : {
+         "properties_attributes" : { },
+         "properties" : {
+           "SECRET_KEY" : "admin",
+           "SUPERSET_DATABASE_NAME" : "{{ database_options.superset_db_name }}",
+           "SUPERSET_DATABASE_USER" : "{{ database_options.superset_db_username }}",
+           "SUPERSET_DATABASE_PASSWORD" : "{{ database_options.superset_db_password }}",
+           "SUPERSET_DATABASE_PORT" : "{{ mysql_port }}",
+           "SUPERSET_DATABASE_HOSTNAME" : "{{ database_options.external_hostname|default(ansible_fqdn,true)    }}",
+           "SUPERSET_DATABASE_TYPE" : "{{ database }}",
+           "WTF_CSRF_ENABLED" : "True",
+          {% if database == "mysql" or database == "mariadb" -%}
+           "SUPERSET_DATABASE_PORT" : {{ mysql_port }}
+          {% endif %}
+         }
+       }
+     },
+     {
+       "superset-env" : {
+         "properties_attributes" : { },
+         "properties" : {
+           "superset_admin_lastname" : "{{ superset_lastname | default("admin") }}",
+           "superset_admin_email" : "{{ superset_email | default ("admin@hortonworks.com") }}",
+           "superset_admin_firstname" : "{{ superset_firstname | default("admin") }}",
+           "superset_admin_user" : "{{ superset_admin | default("admin") }}"
+         }
+       }
+     },
+{% endif %}
+
+
 {% if namenode_groups|length > 0 %}
     {
       "hadoop-env" : {

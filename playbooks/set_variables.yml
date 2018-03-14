@@ -26,6 +26,10 @@
         streamline_hosts: []
         registry_hosts: []
         hdf_hosts: []
+        superset_groups: []
+        superset_hosts: []
+        druid_groups: []
+        druid_hosts: []
         install_hdp: False
         install_hdf: False
       no_log: True
@@ -107,6 +111,18 @@
         when: groups[item.role] is defined and groups[item.role]|length > 0 and ('REGISTRY_SERVER' in item.services)
         with_items: "{{ hostvars[groups['ambari-server']|sort|list|first]['blueprint_dynamic'] }}"
         no_log: True
+
+      - name: Populate the druid hosts list
+        set_fact:
+          druid_hosts: "{{ druid_hosts }} + {{ groups[item.role] }}"
+        when: groups[item.role] is defined and groups[item.role]|length > 0 and ('DRUID_OVERLORD' in item.services)
+        with_items: "{{ hostvars[groups['ambari-server']|sort|list|first]['blueprint_dynamic'] }}"
+
+      - name: Populate the superset hosts list
+        set_fact:
+          superset_hosts: "{{ superset_hosts }} + {{ groups[item.role] }}"
+        when: groups[item.role] is defined and groups[item.role]|length > 0 and ('SUPERSET' in item.services)
+        with_items: "{{ hostvars[groups['ambari-server']|sort|list|first]['blueprint_dynamic'] }}"
 
       - name: Populate the hdf hosts list
         set_fact:

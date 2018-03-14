@@ -3,11 +3,13 @@
 
 - name: Create {{ outer_loop.role }} node(s)
   os_server:
-    name: "{{ cluster_name }}-{{ outer_loop.role }}{{ (outer_loop.count > 1) | ternary(local_loop,'') }}{{ cloud_config.name_suffix|default('') }}"
+    name: "{{ cluster_name }}{{sep}}{{ outer_loop.role }}{{ (outer_loop.count > 1) | ternary(local_loop,'') }}{{ cloud_config.name_suffix|default('') }}"
     image: "{{ outer_loop.image }}"
     flavor: "{{ outer_loop.flavor }}"
     key_name: "{{ cloud_config.ssh.keyname }}"
     availability_zone: "{{ cloud_config.zone }}"
+    network: "{{ cloud_config.network|default(omit) }}"
+    auto_ip : "{{ cloud_config.auto_ip|default(omit) }}"
     state: present
     wait: true
     timeout: 900
@@ -15,10 +17,10 @@
     meta:
       Cluster: "{{ cluster_name }}"
       Role: "{{ outer_loop.role }}"
-      Group: "{{ cluster_name }}-{{ outer_loop.role }}"
+      Group: "{{ cluster_name }}{{sep}}{{ outer_loop.role }}"
   loop_control:
     loop_var: local_loop
-  with_sequence: count="{{ outer_loop.count }}" format=-%02x
+  with_sequence: count="{{ outer_loop.count }}" format={{sep}}%02x
   async: 1000
   poll: 0
   register: current_nodes_async
@@ -32,3 +34,5 @@
   register: current_nodes
   until: current_nodes.finished
   retries: 120
+  tags: 
+      - skip

@@ -1,27 +1,41 @@
 ---
 cloud_config:
   name_suffix: ''
-  zone: PS
+  zone: SE
   admin_username: centos
+  auto_ip: False
+  network: "71a870bb-191c-4abe-bf02-ece2e9b3345c"
   ssh:
     keyname: field
     privatekey: ~/.ssh/field.pem
 
 nodes:
-  - role: "hdp-master"
+  - role: "m"
     count: 1
     image: CentOS 7.2
     flavor: m3.xlarge
-    public_ip: false
     ambari_server: true
+    public_ip: false
 
-  - role: "hdp-slave"
-    count: 2
+  - role: "m1"
+    count: 0
+    image: CentOS 7.2
+    flavor: m3.xlarge
+    public_ip: false
+
+  - role: "m2"
+    count: 0
+    image: CentOS 7.2
+    flavor: m3.xlarge
+    public_ip: false
+
+  - role: "s"
+    count: 1
     image: CentOS 7.2
     flavor: m3.large
     public_ip: false
 
-  - role: "hdp-edge"
+  - role: "e"
     count: 0
     image: CentOS 7.2
     flavor: m3.medium
