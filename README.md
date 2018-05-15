@@ -145,3 +145,43 @@ Currently, these playbooks are divided into the following parts:
 - [ ] Make use of additional storage for HDP workers
 - [ ] Make use of additional storage for master services
 - [ ] Configure additional storage for NiFi
+
+### Dynamic blueprint Service templates
+- [ ] Druid
+- [ ] Superset
+- [ ] Schema Registry
+- [ ] NifI regsitry
+- [ ] Nifi
+- [ ] Storm
+- [ ] SAM
+- [ ] Hive LLAP
+- [ ] Hive
+- [ ] HDFS
+- [ ] YARN
+- [ ] HBASE
+- [ ] Kafka
+- [ ] Zookeeper
+- [ ] Phoneix
+- [ ] Ranger
+- [ ] Atlas
+- [ ] Knox
+- [ ] Ranger KMS
+- [ ] Spark 1.x
+- [ ] Spark 2.x
+- [ ] Solr
+- [ ] Ambari Infra
+- [ ] Smart Sense
+- [ ] Log Explorer
+- [ ] Zepplin
+- [ ] Oozie
+
+### Easy Button
+
+
+#### Todo
+- refactor to use inheritene and have each component contributing its config 
+- simplify the install to a single executable
+- simplify cluster creation to a single executable
+- add demos and multi cluster support
+- use inventory plugin and add filters to speed up things in HWX
+- LDAP/Kerberose and Hortonoia bank setup
